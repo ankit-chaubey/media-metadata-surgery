@@ -4,7 +4,7 @@
 
 The core engine is written in **Go** for performance, safety, and correctness. A lightweight **Python wrapper** is used only for distribution, making the tool easy to install via `pip` while keeping the actual logic native and fast.
 
-> v0.1.0 is the beginning. The project is intentionally small, strict, and correct. More formats and operations will be added incrementally.
+> v0.1.1 is the beginning. The project is intentionally small, strict, and correct. More formats and operations will be added incrementally.
 
 ---
 
@@ -30,7 +30,7 @@ No cloud. No telemetry. No shelling out to system tools.
 
 ## Current status
 
-**Version:** `0.1.0` (initial release)
+**Version:** `0.1.1` (initial release)
 
 This version intentionally supports **only one format and one operation**:
 
@@ -95,7 +95,7 @@ UserComment: "filter: 104; ..."
 
 ---
 
-## Supported formats (v0.1.0)
+## Supported formats (v0.1.1)
 
 | Media type | Format     | Operation          |
 | ---------- | ---------- | ------------------ |
