@@ -924,7 +924,7 @@ func editMP4(path, outPath string, opts core.EditOptions) error {
 		if atomKey == "" {
 			atomKey = k
 		}
-		entries = append(entries, atomEntry{name: atomKey, val: v})
+		entries = append(entries, struct{ name, val string }{name: atomKey, val: v})
 	}
 
 	if len(entries) == 0 && len(opts.Delete) == 0 {

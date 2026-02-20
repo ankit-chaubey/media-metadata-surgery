@@ -37,6 +37,8 @@ type StripOptions struct {
 	StripGPS bool
 	// StripAll removes every possible metadata structure.
 	StripAll bool
+	// DryRun previews what would be removed without writing.
+	DryRun bool
 }
 
 // EditOptions holds field changes for an edit operation.
