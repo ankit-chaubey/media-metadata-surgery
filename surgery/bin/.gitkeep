@@ -1,0 +1,2 @@
+# The surgery binary is compiled from the Go source and placed here.
+# Build with: go build -o surgery/bin/surgery ./cli

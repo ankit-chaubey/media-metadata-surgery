@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+
+# Go
+*.exe
+*.out
+
+# OS / editor
+.DS_Store
