@@ -8,6 +8,11 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write  # required for Trusted Publisher (OIDC)
+      contents: read
+
     steps:
       - uses: actions/checkout@v4
 
@@ -16,11 +21,28 @@ jobs:
         with:
           go-version: '1.21'
 
-      - name: Build Go binary
+      - name: Build Go binaries (all platforms)
         run: |
           mkdir -p surgery/bin
-          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o surgery/bin/surgery ./cli
-          chmod +x surgery/bin/surgery
+
+          # Linux
+          GOOS=linux  GOARCH=amd64  go build -ldflags="-s -w" -o surgery/bin/surgery-linux-amd64   ./cli
+          GOOS=linux  GOARCH=arm64  go build -ldflags="-s -w" -o surgery/bin/surgery-linux-arm64   ./cli
+
+          # macOS
+          GOOS=darwin GOARCH=amd64  go build -ldflags="-s -w" -o surgery/bin/surgery-darwin-amd64  ./cli
+          GOOS=darwin GOARCH=arm64  go build -ldflags="-s -w" -o surgery/bin/surgery-darwin-arm64  ./cli
+
+          # Windows
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o surgery/bin/surgery-windows-amd64.exe ./cli
+          GOOS=windows GOARCH=arm64 go build -ldflags="-s -w" -o surgery/bin/surgery-windows-arm64.exe ./cli
+
+          # Default binary for pip (Linux amd64)
+          cp surgery/bin/surgery-linux-amd64 surgery/bin/surgery
+          chmod +x surgery/bin/surgery surgery/bin/surgery-linux-* surgery/bin/surgery-darwin-*
+
+          echo "Built binaries:"
+          ls -lh surgery/bin/
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,13 +50,10 @@ jobs:
           python-version: '3.11'
 
       - name: Install build tools
-        run: pip install build twine
+        run: pip install build
 
       - name: Build Python package
         run: python -m build
 
       - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: twine upload dist/*
+        uses: pypa/gh-action-pypi-publish@release/v1
